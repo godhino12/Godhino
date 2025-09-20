@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Godhino Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #222;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-size: 20px;
+    }
+    .container {
+      width: 300px;
+      margin: 80px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px gray;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #222;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #444;
+    }
+    #dashboard {
+      display: none;
+      text-align: center;
+      padding: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>godhino</header>
+
+  <!-- Login Page -->
+  <div id="loginPage" class="container">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Enter username" required>
+    <input type="password" id="password" placeholder="Enter password" required>
+    <button onclick="login()">Login</button>
+    <p id="message" style="color:red;"></p>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard">
+    <h2>Welcome, <span id="displayName"></span> 👋</h2>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <script>
+    // Fake JSON user database
+    const users = [
+      { username: "john", password: "1234" },
+      { username: "mary", password: "abcd" },
+      { username: "admin", password: "admin" }
+    ];
+
+    // Check session on load
+    window.onload = function() {
+      const storedUser = localStorage.getItem("loggedInUser");
+      if (storedUser) {
+        showDashboard(storedUser);
+      }
+    }
+
+    function login() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const message = document.getElementById("message");
+
+      // Match against JSON
+      const user = users.find(u => u.username === username && u.password === password);
+
+      if (user) {
+        localStorage.setItem("loggedInUser", user.username);
+        showDashboard(user.username);
+      } else {
+        message.textContent = "Invalid username or password!";
+      }
+    }
+
+    function showDashboard(name) {
+      document.getElementById("loginPage").style.display = "none";
+      document.getElementById("dashboard").style.display = "block";
+      document.getElementById("displayName").textContent = name;
+    }
+
+    function logout() {
+      localStorage.removeItem("loggedInUser");
+      document.getElementById("dashboard").style.display = "none";
+      document.getElementById("loginPage").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
