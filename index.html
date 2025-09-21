@@ -1,122 +1,193 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-  <title>Godhino Login</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Welcome — Interactive Site</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #222;
-      color: white;
-      padding: 10px;
-      text-align: center;
-      font-size: 20px;
-    }
-    .container {
-      width: 300px;
-      margin: 80px auto;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px gray;
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    button {
-      width: 100%;
-      padding: 10px;
-      background: #222;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #444;
-    }
-    #dashboard {
-      display: none;
-      text-align: center;
-      padding: 40px;
-    }
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#7c3aed;--muted:#9aa4b2;--glass:rgba(255,255,255,0.04)}
+    *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#071122 0%, #081427 60%);color:#e6eef6}
+    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px}
+    .card{width:980px;max-width:100%;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:16px;padding:28px;box-shadow:0 10px 30px rgba(2,6,23,0.6);display:grid;grid-template-columns:1fr 360px;gap:18px}
+    .left{padding:18px}
+    .logo{display:flex;gap:12px;align-items:center}
+    .logo .mark{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#4f46e5);display:flex;align-items:center;justify-content:center;font-weight:700}
+    h1{margin:14px 0 6px;font-size:28px}
+    p.lead{color:var(--muted);margin:0 0 18px}
+    .features{display:flex;gap:10px;flex-wrap:wrap}
+    .feature{background:var(--glass);padding:12px;border-radius:10px;min-width:180px}
+    .right{padding:18px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:12px}
+    .auth-btn{display:flex;flex-direction:column;gap:10px}
+    button{cursor:pointer;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+    .primary{background:linear-gradient(90deg,var(--accent),#4f46e5);border:none;color:white}
+    .muted{background:transparent;border:1px dashed rgba(255,255,255,0.04)}
+    .small{font-size:13px;color:var(--muted);text-align:center;margin-top:12px}
+
+    /* modal */
+    .modal-bg{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:none;align-items:center;justify-content:center}
+    .modal{width:420px;background:#071126;padding:18px;border-radius:12px}
+    .form-row{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+    label{font-size:13px;color:var(--muted)}
+    input[type=text],input[type=password],input[type=email]{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+    .hint{font-size:12px;color:var(--muted)}
+
+    .connected-list{margin-top:12px;padding:10px;background:rgba(255,255,255,0.02);border-radius:8px;max-height:150px;overflow:auto}
+    .user-row{display:flex;justify-content:space-between;padding:6px 8px;border-radius:6px}
+
+    footer{margin-top:14px;font-size:13px;color:var(--muted)}
+
+    @media (max-width:880px){.card{grid-template-columns:1fr;}
+      .right{order:-1}}
   </style>
 </head>
 <body>
+  <div class="wrap">
+    <div class="card">
+      <div class="left">
+        <div class="logo"><div class="mark">IW</div><div>
+          <div style="font-weight:700">Interactive Welcome</div>
+          <div class="hint">Fast demo: sign up, login, and see connected users.</div>
+        </div></div>
+        <h1>Welcome to the interactive demo</h1>
+        <p class="lead">A minimal front-end with an embedded server to store users to a JSON file and a socket channel to simulate connected users.</p>
 
-  <header>godhino</header>
+        <div class="features">
+          <div class="feature">
+            <strong>Sign up / Login</strong>
+            <div class="hint">Client communicates with the server; server saves `users.json`.</div>
+          </div>
+          <div class="feature">
+            <strong>WebSocket</strong>
+            <div class="hint">See who is connected in real time.</div>
+          </div>
+          <div class="feature">
+            <strong>Lightweight</strong>
+            <div class="hint">No database required — JSON file backed.</div>
+          </div>
+        </div>
 
-  <!-- Login Page -->
-  <div id="loginPage" class="container">
-    <h2>Login</h2>
-    <input type="text" id="username" placeholder="Enter username" required>
-    <input type="password" id="password" placeholder="Enter password" required>
-    <button onclick="login()">Login</button>
-    <p id="message" style="color:red;"></p>
+        <footer>Made for demonstration. Do not use this code as-is in production — missing password hashing & security hardening.</footer>
+      </div>
+
+      <div class="right">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="font-weight:700">Get started</div>
+          <div class="hint">Demo server + sockets</div>
+        </div>
+
+        <div class="auth-btn">
+          <button id="openSignUp" class="primary">Sign up</button>
+          <button id="openLogin" class="muted">Login</button>
+        </div>
+
+        <div class="small">Connected users (live)</div>
+        <div id="connected" class="connected-list"><div class="hint">No users connected</div></div>
+
+      </div>
+    </div>
   </div>
 
-  <!-- Dashboard -->
-  <div id="dashboard">
-    <h2>Welcome, <span id="displayName"></span> 👋</h2>
-    <button onclick="logout()">Logout</button>
+  <!-- modal -->
+  <div id="modalBg" class="modal-bg">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div id="modalContent"></div>
+    </div>
   </div>
 
   <script>
-    // Fake JSON user database
-    const users = [
-      { username: "godhino", password: "godhino" },
-      { username: "mary", password: "abcd" },
-      { username: "admin", password: "admin" }
-    ];
+    const modalBg = document.getElementById('modalBg');
+    const modalContent = document.getElementById('modalContent');
 
-    // Check session on load
-    window.onload = function() {
-      const storedUser = localStorage.getItem("loggedInUser");
-      if (storedUser) {
-        showDashboard(storedUser);
+    function openModal(html){ modalContent.innerHTML = html; modalBg.style.display = 'flex'; }
+    function closeModal(){ modalBg.style.display = 'none'; modalContent.innerHTML = ''; }
+
+    document.getElementById('openSignUp').addEventListener('click', ()=>{
+      openModal(`
+        <h3>Sign up</h3>
+        <div class='form-row'><label>Full name</label><input id='su_name' type='text' /></div>
+        <div class='form-row'><label>Email</label><input id='su_email' type='email' /></div>
+        <div class='form-row'><label>Password</label><input id='su_pass' type='password' /></div>
+        <div style='display:flex;gap:8px;justify-content:flex-end'><button id='su_cancel'>Cancel</button><button id='su_submit' class='primary'>Create account</button></div>
+        <div id='su_msg' class='hint'></div>
+      `);
+
+      document.getElementById('su_cancel').onclick = closeModal;
+      document.getElementById('su_submit').onclick = async () => {
+        const name = document.getElementById('su_name').value.trim();
+        const email = document.getElementById('su_email').value.trim();
+        const pass = document.getElementById('su_pass').value;
+        const msg = document.getElementById('su_msg');
+        if(!name || !email || !pass){ msg.textContent = 'All fields required'; return; }
+        try{
+          const res = await fetch('/api/signup',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({name,email,password:pass})});
+          const data = await res.json();
+          if(!res.ok) msg.textContent = data.error || 'Error'; else { msg.textContent = 'Account created — you can login.' }
+        }catch(e){ msg.textContent = 'Network error' }
+      };
+    });
+
+    document.getElementById('openLogin').addEventListener('click', ()=>{
+      openModal(`
+        <h3>Login</h3>
+        <div class='form-row'><label>Email</label><input id='li_email' type='email' /></div>
+        <div class='form-row'><label>Password</label><input id='li_pass' type='password' /></div>
+        <div style='display:flex;gap:8px;justify-content:flex-end'><button id='li_cancel'>Cancel</button><button id='li_submit' class='primary'>Login</button></div>
+        <div id='li_msg' class='hint'></div>
+      `);
+      document.getElementById('li_cancel').onclick = closeModal;
+      document.getElementById('li_submit').onclick = async ()=>{
+        const email = document.getElementById('li_email').value.trim();
+        const pass = document.getElementById('li_pass').value;
+        const msg = document.getElementById('li_msg');
+        if(!email || !pass){ msg.textContent = 'Both fields required'; return }
+        try{
+          const res = await fetch('/api/login',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email,password:pass})});
+          const data = await res.json();
+          if(!res.ok){ msg.textContent = data.error || 'Login failed' } else {
+            msg.textContent = 'Logged in — connecting to socket...';
+            // store user token (simple) and connect socket
+            localStorage.setItem('iw_user', JSON.stringify(data.user));
+            closeModal();
+            connectSocket();
+          }
+        }catch(e){ msg.textContent = 'Network error' }
       }
+    });
+
+    // socket connection and connected list
+    let socket;
+    function connectSocket(){
+      const raw = localStorage.getItem('iw_user');
+      if(!raw) return;
+      const user = JSON.parse(raw);
+      if(socket && socket.connected) return;
+      socket = io();
+      socket.on('connect', ()=>{
+        socket.emit('auth', {id:user.email,name:user.name});
+      });
+      socket.on('connected-list', list => renderConnected(list));
+      socket.on('disconnect', ()=> renderConnected([]));
     }
 
-    function login() {
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-      const message = document.getElementById("message");
-
-      // Match against JSON
-      const user = users.find(u => u.username === username && u.password === password);
-
-      if (user) {
-        localStorage.setItem("loggedInUser", user.username);
-        showDashboard(user.username);
-      } else {
-        message.textContent = "Invalid username or password!";
-      }
+    function renderConnected(list){
+      const el = document.getElementById('connected');
+      el.innerHTML = '';
+      if(!list || list.length===0){ el.innerHTML = '<div class="hint">No users connected</div>'; return }
+      list.forEach(u=>{
+        const row = document.createElement('div'); row.className='user-row';
+        row.innerHTML = `<div>${u.name}</div><div style='opacity:.7;font-size:13px'>${u.id}</div>`;
+        el.appendChild(row);
+      });
     }
 
-    function showDashboard(name) {
-      document.getElementById("loginPage").style.display = "none";
-      document.getElementById("dashboard").style.display = "block";
-      document.getElementById("displayName").textContent = name;
-    }
+    // try auto-connect if token present
+    if(localStorage.getItem('iw_user')) setTimeout(connectSocket,300);
 
-    function logout() {
-      localStorage.removeItem("loggedInUser");
-      document.getElementById("dashboard").style.display = "none";
-      document.getElementById("loginPage").style.display = "block";
-    }
+    // close modal on background click
+    modalBg.addEventListener('click', (e)=>{ if(e.target === modalBg) closeModal(); });
+
   </script>
-
+  <script src="/socket.io/socket.io.js"></script>
 </body>
 </html>
